@@ -1,0 +1,65 @@
+GPUID: 0
+WORKERS: 2
+PRINT_FREQ: 1000
+SAVE_FREQ: 3
+PIN_MEMORY: True
+OUTPUT_DIR: 'output'
+
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+
+DATASET:
+  DATASET: 360CC
+# 因資料量太大放同一個資料夾會很慢，所以改成不同資料夾(原資料夾)
+  ROOT: "../CRNN_Chinese_Characters_Rec_data/datasets"
+#  ROOT: "H:/DL-DATASET/360M/images"
+  CHAR_FILE: 'lib/dataset/txt/char_std_zhcn_8000.txt'
+  JSON_FILE: {'train': '../CRNN_Chinese_Characters_Rec_data/datasets/train/train_code.txt', 'val': '../CRNN_Chinese_Characters_Rec_data/datasets/train/test_code.txt'}
+#  JSON_FILE: {'train': 'H:/DL-DATASET/360M/train.txt', 'val': 'H:/DL-DATASET/360M/test.txt'}
+  SCALE_FACTOR: 0.25
+  ROT_FACTOR: 30
+  STD: 0.1979   # # 0.1979    ori  0.193
+  MEAN: 0.8281  # # 0.8281    ori  0.588
+  ALPHABETS: ''
+
+TRAIN:
+  BATCH_SIZE_PER_GPU: 32
+  SHUFFLE: True
+  BEGIN_EPOCH: 0
+  END_EPOCH: 100
+  RESUME: 
+    IS_RESUME: True
+    FILE: 'output/360CC/checkpoints/checkpoint_84_acc_0.8722_0.000007600.pth'
+  OPTIMIZER: 'adam'
+  LR: 1.0e-05  # loss 6.5 以上時 0.00001 效果最好  0.000012
+  WD: 0.0
+  LR_STEP: 4
+  LR_FACTOR: 0.9        # https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.MultiStepLR.html 
+  MOMENTUM: 0.0
+  NESTEROV: False
+  RMSPROP_ALPHA:
+  RMSPROP_CENTERED:
+  FINETUNE:  # lr will reset to default setting
+    IS_FINETUNE: False
+    FINETUNE_CHECKPOINIT: 'output/360CC/checkpoints/checkpoint_48_acc_0.9085_0.000001100.pth'
+    FREEZE: False
+
+TEST:
+  BATCH_SIZE_PER_GPU: 64
+  SHUFFLE: True  # for random test rather than test on the whole validation set
+  ### num_test_sample = config.TEST.NUM_TEST_BATCH * config.TEST.BATCH_SIZE_PER_GPU
+  NUM_TEST_BATCH: 725  # number of batches to test = BATCH_SIZE_PER_GPU * NUM_TEST_BATCH
+  NUM_TEST_DISP: 10   # number of samples to display 驗證時顯示辨識結果的數量(文字行數)
+  VALID_PRINT_FREQ: 100 # print frequency during validation
+
+MODEL:
+  NAME: 'crnn'
+  IMAGE_SIZE:
+    OW: 1153 # origial width: 280 888
+    H: 32
+    W: 1153   # resized width: 160 888
+  NUM_CLASSES: 0
+  NUM_HIDDEN: 256
+

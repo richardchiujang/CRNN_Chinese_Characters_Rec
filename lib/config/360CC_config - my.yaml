@@ -1,0 +1,62 @@
+GPUID: 0
+WORKERS: 20
+PRINT_FREQ: 100
+SAVE_FREQ: 10
+PIN_MEMORY: True
+OUTPUT_DIR: 'output'
+
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+
+DATASET:
+  DATASET: 360CC
+  ROOT: "../CRNN_Chinese_Characters_Rec_data/datasets/train"
+#  ROOT: "H:/DL-DATASET/360M/images"
+  CHAR_FILE: 'lib/dataset/txt/char_std_zhcn_8000.txt'
+  JSON_FILE: {'train': '../CRNN_Chinese_Characters_Rec_data/datasets/train/train_code.txt', 'val': '../CRNN_Chinese_Characters_Rec_data/datasets/train/test_code.txt'}
+#  JSON_FILE: {'train': 'H:/DL-DATASET/360M/train.txt', 'val': 'H:/DL-DATASET/360M/test.txt'}
+  SCALE_FACTOR: 0.25
+  ROT_FACTOR: 30
+  STD: 0.193
+  MEAN: 0.588
+  ALPHABETS: ''
+
+TRAIN:
+  BATCH_SIZE_PER_GPU: 64
+  SHUFFLE: True
+  BEGIN_EPOCH: 0
+  END_EPOCH: 1000
+  RESUME: 
+    IS_RESUME: True
+    FILE: 'output/360CC/crnn/checkpoints/checkpoint_95_acc_0.0000.pth'
+  OPTIMIZER: 'adam'
+  LR: 0.0001
+  WD: 0.0
+  LR_STEP: [60, 80]
+  LR_FACTOR: 0.1
+  MOMENTUM: 0.0
+  NESTEROV: False
+  RMSPROP_ALPHA:
+  RMSPROP_CENTERED:
+  FINETUNE:
+    IS_FINETUNE: False
+    FINETUNE_CHECKPOINIT: 'output/checkpoints/checkpoint_13_acc_0.9770.pth'
+    FREEZE: False
+
+TEST:
+  BATCH_SIZE_PER_GPU: 64
+  SHUFFLE: True  # for random test rather than test on the whole validation set
+  NUM_TEST_BATCH: 1000
+  NUM_TEST_DISP: 10
+
+MODEL:
+  NAME: 'crnn'
+  IMAGE_SIZE:
+    OW: 280 # origial width: 280
+    H: 32
+    W: 280   # resized width: 160
+  NUM_CLASSES: 0
+  NUM_HIDDEN: 256
+
