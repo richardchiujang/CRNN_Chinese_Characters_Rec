@@ -1,5 +1,5 @@
 import os, time, datetime
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0' 
 import torch
 import torch.backends.cudnn as cudnn
 from torch.utils.data import DataLoader
