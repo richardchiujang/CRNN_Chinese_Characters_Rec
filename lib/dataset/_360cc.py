@@ -24,18 +24,23 @@ class _360CC(data.Dataset):
             char_dict = {num: char.strip('\n') for num, char in enumerate(file.readlines())} # 不排掉空白符
 
         txt_file = config.DATASET.JSON_FILE['train'] if is_train else config.DATASET.JSON_FILE['val']
+        print("txt_file: ", txt_file)
 
         # convert name:indices to name:string
         self.labels = []
+
         with open(txt_file, 'r', encoding='utf-8') as file:
             contents = file.readlines()
             for c in contents:
-                c = c.replace('\n','')
-                imgname = c.split(' ')[0]
-                indices = c.split(' ')[1:]  # 字碼
-                string = ''.join([char_dict[int(idx)] for idx in indices])
-                self.labels.append({imgname: string})
-
+                try:
+                    c = c.replace('\n','')
+                    imgname = c.split(' ')[0]
+                    indices = c.split(' ')[1:]  # 字碼
+                    string = ''.join([char_dict[int(idx)] for idx in indices])
+                    self.labels.append({imgname: string})
+                except:
+                    print("load {} {} failed!".format(txt_file, c))
+                    continue
         print("load {} images!".format(self.__len__()))
 
     def __len__(self):

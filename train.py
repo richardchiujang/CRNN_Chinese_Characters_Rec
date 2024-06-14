@@ -129,7 +129,7 @@ def main():
         pin_memory=config.PIN_MEMORY,
     )    
 
-    best_acc = 0.1
+    best_acc = 0.5
     converter = utils.strLabelConverter(config.DATASET.ALPHABETS)
     
     for epoch in range(last_epoch, config.TRAIN.END_EPOCH):
@@ -147,7 +147,16 @@ def main():
         best_acc = max(acc, best_acc)
         print("is best:", is_best)
         print("best acc is:", best_acc)
-        # save checkpoint
+        # save checkpoint twice
+        torch.save(
+            {
+                "state_dict": model.state_dict(),
+                "epoch": epoch + 1,
+                # "optimizer": optimizer.state_dict(),
+                # "lr_scheduler": lr_scheduler.state_dict(),
+                # "best_acc": best_acc,
+            },  os.path.join(output_dict['chs_dir'], "checkpoint_latest.pth")
+        )
         torch.save(
             {
                 "state_dict": model.state_dict(),
@@ -157,7 +166,6 @@ def main():
                 # "best_acc": best_acc,
             },  os.path.join(output_dict['chs_dir'], "checkpoint_{}_acc_{:.4f}_{:.9f}.pth".format(epoch, acc, lr_scheduler.get_last_lr()[0]))
         )
-
     writer_dict['writer'].close()
 
 if __name__ == '__main__':

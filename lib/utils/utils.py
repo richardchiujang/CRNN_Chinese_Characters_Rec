@@ -132,15 +132,15 @@ class strLabelConverter(object):
             else:
                 char_list = []
                 for i in range(length):
-                    if t[i] != 0 and (not (i > 0 and t[i - 1] == t[i])):    
-                        char_list.append(self.alphabet[t[i] - 1])
-                    # try:
-                    #     # 使用0作為填充值，在解碼時應該忽略，因此在此處遇到0時直接跳過
-                    #     # 如果前一個元素與當前元素相同，表示這是一個重複的字元，在解碼時也應該忽略
-                    #     if t[i] != 0 and (not (i > 0 and t[i - 1] == t[i])):    
-                    #         char_list.append(self.alphabet[t[i] - 1])
-                    # except:
-                    #     print('lib utils utils except issue t[i]:', t[i], 'i:', i, 'length:', length, 't:', t)
+                    # if t[i] != 0 and (not (i > 0 and t[i - 1] == t[i])):    
+                    #     char_list.append(self.alphabet[t[i] - 1])
+                    try:
+                        # 使用0作為填充值，在解碼時應該忽略，因此在此處遇到0時直接跳過
+                        # 如果前一個元素與當前元素相同，表示這是一個重複的字元，在解碼時也應該忽略
+                        if t[i] != 0 and (not (i > 0 and t[i - 1] == t[i])):    
+                            char_list.append(self.alphabet[t[i] - 1])
+                    except:
+                        print('lib utils utils except issue t[i]:', t[i], 'i:', i, 'length:', length, 't:', t)
                 return ''.join(char_list)
         else:
             # batch mode
