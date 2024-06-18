@@ -155,7 +155,7 @@ def main():
                 # "optimizer": optimizer.state_dict(),
                 # "lr_scheduler": lr_scheduler.state_dict(),
                 # "best_acc": best_acc,
-            },  os.path.join(output_dict['chs_dir'], "checkpoint_latest.pth")
+            },  os.path.join(output_dict['chs_dir'], "crnn_checkpoint_latest.pth")
         )
         torch.save(
             {
@@ -164,7 +164,7 @@ def main():
                 # "optimizer": optimizer.state_dict(),
                 # "lr_scheduler": lr_scheduler.state_dict(),
                 # "best_acc": best_acc,
-            },  os.path.join(output_dict['chs_dir'], "checkpoint_{}_acc_{:.4f}_{:.9f}.pth".format(epoch, acc, lr_scheduler.get_last_lr()[0]))
+            },  os.path.join(output_dict['chs_dir'], "crnn_checkpoint_{}_acc_{:.4f}_{:.9f}.pth".format(epoch, acc, lr_scheduler.get_last_lr()[0]))
         )
     writer_dict['writer'].close()
 

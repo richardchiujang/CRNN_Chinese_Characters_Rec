@@ -1,8 +1,8 @@
 GPUID: 0
-WORKERS: 2
+WORKERS: 16
 PRINT_FREQ: 1000
 SAVE_FREQ: 3
-PIN_MEMORY: True
+PIN_MEMORY: False
 OUTPUT_DIR: 'output'
 
 CUDNN:
@@ -25,15 +25,15 @@ DATASET:
   ALPHABETS: ''
 
 TRAIN:
-  BATCH_SIZE_PER_GPU: 80
+  BATCH_SIZE_PER_GPU: 120
   SHUFFLE: True
   BEGIN_EPOCH: 0
   END_EPOCH: 500
   RESUME: 
     IS_RESUME: True
-    FILE: 'output/360CC/checkpoints/checkpoint_latest.pth'
+    FILE: 'output/360CC/checkpoints/crnn_checkpoint_latest.pth'
   OPTIMIZER: 'adam'
-  LR: 0.0001  # loss 6.5 以上時 0.00001 效果最好  0.000012
+  LR: 0.00001  # loss 6.5 以上時 0.00001 效果最好  0.000012
   WD: 0.0
   LR_STEP: 2
   LR_FACTOR: 0.7        # https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.MultiStepLR.html 
@@ -43,14 +43,14 @@ TRAIN:
   RMSPROP_CENTERED:
   FINETUNE:  # lr will reset to default setting
     IS_FINETUNE: False
-    FINETUNE_CHECKPOINIT: 'output/360CC/checkpoints/checkpoint_latest.pth'
+    FINETUNE_CHECKPOINIT: 'output/360CC/checkpoints/crnn_checkpoint_latest.pth'
     FREEZE: False
 
 TEST:
-  BATCH_SIZE_PER_GPU: 60
-  SHUFFLE: True  # for random test rather than test on the whole validation set
+  BATCH_SIZE_PER_GPU: 120
+  SHUFFLE: False  # for random test rather than test on the whole validation set
   ### num_test_sample = config.TEST.NUM_TEST_BATCH * config.TEST.BATCH_SIZE_PER_GPU
-  NUM_TEST_BATCH: 1200  # number of batches to test = BATCH_SIZE_PER_GPU * NUM_TEST_BATCH
+  NUM_TEST_BATCH: 600  # number of batches to test = BATCH_SIZE_PER_GPU * NUM_TEST_BATCH
   NUM_TEST_DISP: 10   # number of samples to display 驗證時顯示辨識結果的數量(文字行數)
   VALID_PRINT_FREQ: 100 # print frequency during validation
 
